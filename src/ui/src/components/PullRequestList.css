@@ -1,0 +1,157 @@
+.pr-list-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: left;
+}
+
+.pr-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pr-list-header h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.pr-refresh-btn {
+  background-color: #4a9eff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.pr-refresh-btn:hover {
+  background-color: #3a8eef;
+}
+
+.pr-loading,
+.pr-error,
+.pr-empty {
+  padding: 20px;
+  text-align: center;
+  color: #888;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.pr-error {
+  color: #ff6b6b;
+}
+
+.pr-count {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.pr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pr-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+  transition: background-color 0.2s;
+}
+
+.pr-card:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.pr-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pr-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pr-title-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.pr-title {
+  color: #4a9eff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pr-title:hover {
+  text-decoration: underline;
+}
+
+.pr-meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.pr-repo {
+  color: #aaa;
+}
+
+.pr-number {
+  color: #666;
+}
+
+.pr-details {
+  margin-top: 12px;
+  padding-left: 52px;
+}
+
+.pr-branches {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.pr-branch {
+  background-color: rgba(74, 158, 255, 0.2);
+  color: #4a9eff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.pr-arrow {
+  color: #666;
+}
+
+.pr-info {
+  display: flex;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.pr-author,
+.pr-date {
+  color: #888;
+}

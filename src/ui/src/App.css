@@ -1,0 +1,56 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #1a1d21;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(10px + 1vmin);
+  color: white;
+  border-bottom: 1px solid #3a3f47;
+}
+
+.App-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 1.8rem;
+}
+
+.App-header > p {
+  margin: 0;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.status-container {
+  margin-top: 15px;
+  padding: 12px 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.status-container p {
+  margin: 0;
+}
+
+.health-status {
+  display: flex;
+  gap: 15px;
+}
+
+.health-status p {
+  margin: 0;
+}
+
+.App-main {
+  padding: 20px;
+  color: white;
+}

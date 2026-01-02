@@ -1,0 +1,121 @@
+services:
+  # Flask API with Strawberry GraphQL
+  api:
+    build:
+      context: ./src/api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=${FLASK_ENV:-development}
+      - FLASK_DEBUG=${FLASK_DEBUG:-1}
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-key}
+      - POSTGRES_USER=${POSTGRES_USER:-renovate}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-renovate_dev_password}
+      - POSTGRES_DB=${POSTGRES_DB:-renovate_platform}
+      - GITEA_URL=http://gitea:3000
+      - GITEA_TOKEN=${GITEA_TOKEN:-}
+    volumes:
+      - ./src/api:/app
+      - ./src/models:/app/models
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - renovate-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # React UI
+  ui:
+    build:
+      context: ./src/ui
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ./src/ui:/app
+      - /app/node_modules
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - renovate-network
+
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-renovate}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-renovate_dev_password}
+      - POSTGRES_DB=${POSTGRES_DB:-renovate_platform}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - renovate-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-renovate} -d ${POSTGRES_DB:-renovate_platform}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Gitea Git Server for testing Renovate
+  gitea:
+    image: gitea/gitea:latest
+    ports:
+      - "3001:3000"
+      - "2222:22"
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=sqlite3
+      - GITEA__server__ROOT_URL=http://gitea:3000
+      - GITEA__server__HTTP_PORT=3000
+    volumes:
+      - gitea_data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - renovate-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Self-hosted Renovate Bot
+  renovate:
+    image: renovate/renovate:latest
+    environment:
+      - RENOVATE_PLATFORM=${RENOVATE_PLATFORM:-gitea}
+      - RENOVATE_ENDPOINT=${RENOVATE_ENDPOINT:-http://gitea:3000}
+      - RENOVATE_TOKEN=${GITEA_TOKEN:-}
+      - LOG_LEVEL=debug
+    volumes:
+      - ./renovate/config.js:/usr/src/app/config.js
+    depends_on:
+      gitea:
+        condition: service_healthy
+    networks:
+      - renovate-network
+    profiles:
+      - renovate
+
+networks:
+  renovate-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  gitea_data:

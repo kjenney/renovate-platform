@@ -1,0 +1,21 @@
+# Web framework
+flask>=3.0.0
+
+# GraphQL
+strawberry-graphql[flask]>=0.220.0
+
+# Database
+psycopg2-binary>=2.9.9
+sqlalchemy>=2.0.0
+flask-sqlalchemy>=3.1.0
+
+# Development
+watchdog>=3.0.0
+python-dotenv>=1.0.0
+
+# Testing
+pytest>=8.0.0
+pytest-flask>=1.3.0
+
+# Functionality
+requests>=2.32.0
